@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import AddTodo from "./components/AddTodo";
+import Todos from "./components/Todos";
+import { Link} from "react-router-dom";
 
 function App() {
+
+  const [todos, setTodos] = useState([])
+
+  const addTodo = (todo) => {
+
+    const id = Math.floor(Math.random() * 10000) + 1
+
+    const newTodo = {id, ...todo}
+    setTodos([...todos, newTodo])
+  }
+
+  const deleteTodo = (id) =>{
+    setTodos(todos.filter((todo) => todo.id !== id))
+  }
+
+
   return (
+    
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AddTodo onAdd={addTodo}/>
+      <Todos todos={todos} onDelete={deleteTodo}/>
+      <Link to="/about">About</Link>
     </div>
   );
 }
